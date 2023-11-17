@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="https://github.com/mmeest/-jira-clone-e2e/blob/master/image.png"></div>
+<div align="center"><img src="https://github.com/mmeest/-jira-clone-e2e/blob/master/image.png" width="260px"></div>
 
 # Jira Clone tests
 
