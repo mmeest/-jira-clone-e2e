@@ -1,9 +1,9 @@
-import { beforeE } from "./connection";
+import { beforeEachModal } from "./connection";
 import { faker } from '@faker-js/faker';
 
 describe('Issue create', () => {
   beforeEach(() => {
-    beforeE();
+    beforeEachModal();
   });
 
   // Variable for accessing 'data-testid' elements
@@ -60,7 +60,7 @@ describe('Issue create', () => {
   });
 
 
-  it('Test Case 1: Custom Issue Creation', () => {
+  it.only('Test Case 1: Custom Issue Creation', () => {
     cy.log('Test Case 1: Custom Issue Creation');
 
     //System finds modal for creating issue and does next steps inside of it
