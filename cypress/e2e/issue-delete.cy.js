@@ -20,7 +20,7 @@ describe('Issue create', () => {
     cy.get('[data-testid="modal:issue-details"] textarea').should('not.contain.text', issueText);
   });
 
-  it('Should cancel deleteion ot the first issue and validate issue remains', () => {
+  it('Should cancel deleteion of the first issue and validate issue remains', () => {
     cy.log("We'll cancel issue deletion");
     cy.get('[data-testid="modal:issue-details"] textarea').should('contain.text', issueText);
     cy.get('[data-testid="icon:trash"]').click();
