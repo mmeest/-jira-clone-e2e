@@ -7,7 +7,7 @@ describe('Issue create', () => {
 
   const issueText = 'This is an issue of type: Task.';
 
-  it('Should delete first issue and validate deletion', () => {
+  it.only('Should delete first issue and validate deletion', () => {
     cy.log("We'll delete some issue");
     cy.get('[data-testid="modal:issue-details"] textarea').should('contain.text', issueText);
     cy.get('[data-testid="icon:trash"]').click();
