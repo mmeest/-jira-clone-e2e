@@ -23,6 +23,11 @@ export class ModalWindow {
         cy.get(this.deleteButtonSelector).click();
     }
 
+    modalHeaderTextToVariable() {
+        /* cy.get(this.modalDetailsSelector).invoke('text').as('issueTitle'); */
+        cy.get('[data-testid="modal:issue-details"] textarea').invoke('text').as('issueTitle');
+    }
+
     modalHeaderTextToValidate(validation) {
         cy.get(this.modalDetailsSelector).should('be.visible');
         cy.get(this.modalDetailsSelector).should('contain.text', validation);

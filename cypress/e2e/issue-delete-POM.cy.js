@@ -10,34 +10,41 @@ describe('Issue create', () => {
     beforeEachDelete();
   });
 
-  const issueText = 'This is an issue of type: Task.';
-
-  it('Should call search', () => {
-    KanbanBoard.search('Search for issue for me');
-  });
+  // Hard coded/deprecated variable that was used at first:
+  // const issueText = 'This is an issue of type: Task.';
 
   it('Should delete first issue and validate deletion', () => {
     cy.log("We'll delete some issue");
-    modalWindow.modalHeaderTextToValidate(issueText);
-    modalWindow.clickDeleteButton();
-    modalDialog.modalConfirmToBeVisible();
-    modalDialog.clickCofirmDelete();
-    modalDialog.modalConfirmNotToExist();
 
-    cy.reload();
-    kanbanBoard.selectFirstIssueFromList();
-    modalWindow.modalHeaderTextNotToValidate(issueText);
+    modalWindow.modalHeaderTextToVariable();
+    cy.get('@issueTitle').then((title) => {
+      const txt = title;
+
+      modalWindow.clickDeleteButton();
+      modalDialog.modalConfirmToBeVisible();
+      modalDialog.clickCofirmDelete();
+      modalDialog.modalConfirmNotToExist();
+  
+      cy.reload();
+      kanbanBoard.selectFirstIssueFromList();
+      modalWindow.modalHeaderTextNotToValidate(title);
+    });
   });
 
-  it.only('Should cancel deletion of the first issue and validate issue remains', () => {
+  it('Should cancel deletion of the first issue and validate issue remains', () => {
     cy.log("Well cancel issue deletion");
-    modalWindow.modalHeaderTextToValidate(issueText);
-    modalWindow.clickDeleteButton();
-    modalDialog.modalConfirmToBeVisible();
-    modalDialog.clickCancelButton();
-    modalDialog.modalConfirmNotToExist();
 
-    cy.reload();
-    modalWindow.modalHeaderTextToValidate(issueText);
+    modalWindow.modalHeaderTextToVariable();
+    cy.get('@issueTitle').then((title) => {
+      const txt = title;
+
+      modalWindow.clickDeleteButton();
+      modalDialog.modalConfirmToBeVisible();
+      modalDialog.clickCancelButton();
+      modalDialog.modalConfirmNotToExist();
+  
+      cy.reload();
+      modalWindow.modalHeaderTextToValidate(title);
+    });
   });    
 });
