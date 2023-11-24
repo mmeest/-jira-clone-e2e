@@ -6,9 +6,14 @@ export function beforeEachDelete(){
     });
 };
 
+export function beforeEachDeletePOM(){
+    cy.visit('/');
+    cy.url().should('eq', `${Cypress.env('baseUrl')}project/board`)        
+}
+    
 export function beforeEachModal(){
     cy.visit('/');
     cy.url().should('eq', `${Cypress.env('baseUrl')}project/board`).then((url) => {
-    cy.visit(url + '/board?modal-issue-create=true');
+        cy.visit(url + '/board?modal-issue-create=true');
     });
 };
