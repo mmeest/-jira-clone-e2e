@@ -11,13 +11,24 @@ describe('Issue comments creating, editing and deleting', () => {
     const getCommentTextArea = () => cy.get('textarea[placeholder="Add a comment..."]');
     const getCommentsArea = () => cy.get('[data-testid="issue-comment"]');
     const getModalConfirm = () => cy.get('[data-testid="modal:confirm"]');
-    const testId = input => cy.get(`[data-testid=${input}]`);    
+    const testId = input => cy.get(`[data-testid=${input}]`);   
+    
+    let numOfComments;
 
     // My combined test
 
-    it('Should add, edit and delete the comment', () => {
+    it.only('Should add, edit and delete the comment', () => {
         const commentOriginal = "This is my first comment.";
         const commentNew = "This is edited comment.";
+
+        /* cy.get('[data-testid="issue-comment"]').then(($comments) => {
+            initialCommentCount = $comments.length;
+        }); */
+
+        getCommentsArea().then(($comments) => {
+        numOfComments = $comments.length;
+        cy.log(numOfComments);
+        
 
         getIssueDetailsModal().within(() => {
             cy.contains('Add a comment...')
@@ -30,8 +41,10 @@ describe('Issue comments creating, editing and deleting', () => {
                     .should('not.exist');
 
                 cy.contains('Add a comment...').should('exist');
-                getCommentsArea().should('contain', commentOriginal);        
-                
+
+                getCommentsArea().should('have.length', numOfComments + 1);
+
+                getCommentsArea().should('contain', commentOriginal);       
                 
                 getCommentsArea()
                     .first()
@@ -66,7 +79,9 @@ describe('Issue comments creating, editing and deleting', () => {
 
             getCommentsArea()
                 .should('contain', 'Edit')
-                .and('not.contain', commentNew);
+                .and('not.contain', commentNew)
+                .should('have.length', numOfComments);
+            });
         });
     });
 
