@@ -21,10 +21,6 @@ describe('Issue comments creating, editing and deleting', () => {
         const commentOriginal = "This is my first comment.";
         const commentNew = "This is edited comment.";
 
-        /* cy.get('[data-testid="issue-comment"]').then(($comments) => {
-            initialCommentCount = $comments.length;
-        }); */
-
         getCommentsArea().then(($comments) => {
         numOfComments = $comments.length;
         cy.log(numOfComments);
