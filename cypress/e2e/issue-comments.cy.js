@@ -8,6 +8,69 @@ describe('Issue comments creating, editing and deleting', () => {
     });
 
     const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+    const getCommentTextArea = () => cy.get('textarea[placeholder="Add a comment..."]');
+    const getCommentsArea = () => cy.get('[data-testid="issue-comment"]');
+    const getModalConfirm = () => cy.get('[data-testid="modal:confirm"]');
+    const testId = input => cy.get(`[data-testid=${input}]`);    
+
+    // My combined test
+
+    it.only('Should add, edit and delete the comment', () => {
+        const commentOriginal = "This is my first comment.";
+        const commentNew = "This is edited comment.";
+
+        getIssueDetailsModal().within(() => {
+            cy.contains('Add a comment...')
+                .click();
+
+            getCommentTextArea().type(commentOriginal).then(() => {
+
+                cy.contains('button', 'Save')
+                    .click()
+                    .should('not.exist');
+
+                cy.contains('Add a comment...').should('exist');
+                getCommentsArea().should('contain', commentOriginal);        
+                
+                
+                getCommentsArea()
+                    .first()
+                    .contains('Edit')
+                    .click()
+                    .should('not.exist');
+
+                getCommentTextArea()
+                    .should('contain', commentOriginal)
+                    .clear()
+                    .type(commentNew);
+
+                cy.contains('button', 'Save')
+                    .click()
+                    .should('not.exist')
+    
+                
+                getCommentsArea()
+                    .should('contain', 'Edit')
+                    .and('contain', commentNew);
+
+                cy.get('[data-testid="issue-comment"]')
+                    .contains('Delete')
+                    .click()
+            });
+
+        }).then(() => {
+            getModalConfirm()
+                .contains('button', 'Delete comment')
+                .click()
+                .should('not.exist');
+
+            getCommentsArea()
+                .should('contain', 'Edit')
+                .and('not.contain', commentNew);
+        });
+    });
+
+    // ------------ORIGINAL CODE BELOW THIS LINE-----------------
 
     it('Should create a comment successfully', () => {
         const comment = 'TEST_COMMENT';
@@ -67,5 +130,5 @@ describe('Issue comments creating, editing and deleting', () => {
         getIssueDetailsModal()
             .find('[data-testid="issue-comment"]')
             .should('not.exist');
-    });
+    });    
 });

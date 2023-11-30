@@ -12,7 +12,7 @@ describe('Issue create', () => {
     cy.get('[data-testid="modal:issue-details"] textarea').should('contain.text', issueText);
     cy.get('[data-testid="icon:trash"]').click();
     cy.get('[data-testid="modal:confirm"]').should('be.visible');
-    cy.contains('button', 'Delete issue').click();
+    cy.contains('button', 'Delete issue').click(); 
     cy.get('[data-testid="modal:confirm"]').should('not.exist');
     
     cy.reload();
