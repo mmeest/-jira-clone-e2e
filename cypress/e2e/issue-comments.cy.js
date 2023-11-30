@@ -15,7 +15,7 @@ describe('Issue comments creating, editing and deleting', () => {
 
     // My combined test
 
-    it.only('Should add, edit and delete the comment', () => {
+    it('Should add, edit and delete the comment', () => {
         const commentOriginal = "This is my first comment.";
         const commentNew = "This is edited comment.";
 
