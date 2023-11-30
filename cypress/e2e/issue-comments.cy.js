@@ -11,6 +11,8 @@ describe('Issue comments creating, editing and deleting', () => {
     const getCommentTextArea = () => cy.get('textarea[placeholder="Add a comment..."]');
     const getCommentsArea = () => cy.get('[data-testid="issue-comment"]');
     const getModalConfirm = () => cy.get('[data-testid="modal:confirm"]');
+
+    // Following variable for testing purpose
     const testId = input => cy.get(`[data-testid=${input}]`);   
     
     let numOfComments;
