@@ -18,20 +18,19 @@ describe('Issue comments creating, editing and deleting', () => {
     let numOfComments;
 
     // My combined test
-
     it.only('Should add, edit and delete the comment', () => {
         const commentOriginal = "This is my first comment.";
         const commentNew = "This is edited comment.";
 
         getCommentsArea().then(($comments) => {
         numOfComments = $comments.length;
-        cy.log(numOfComments);
-        
+        cy.log(numOfComments);        
 
         getIssueDetailsModal().within(() => {
             cy.contains('Add a comment...')
                 .click();
 
+            // 1. We will add a comment
             getCommentTextArea().type(commentOriginal).then(() => {
 
                 cy.contains('button', 'Save')
@@ -41,9 +40,9 @@ describe('Issue comments creating, editing and deleting', () => {
                 cy.contains('Add a comment...').should('exist');
 
                 getCommentsArea().should('have.length', numOfComments + 1);
-
                 getCommentsArea().should('contain', commentOriginal);       
                 
+                // 2. We'll edit the comment
                 getCommentsArea()
                     .first()
                     .contains('Edit')
@@ -57,16 +56,16 @@ describe('Issue comments creating, editing and deleting', () => {
 
                 cy.contains('button', 'Save')
                     .click()
-                    .should('not.exist')
-    
+                    .should('not.exist');    
                 
                 getCommentsArea()
                     .should('contain', 'Edit')
                     .and('contain', commentNew);
 
+                // 3. Finally deleting our comment
                 cy.get('[data-testid="issue-comment"]')
                     .contains('Delete')
-                    .click()
+                    .click();
             });
 
         }).then(() => {
