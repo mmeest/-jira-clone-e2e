@@ -7,17 +7,72 @@ describe('Issue comments creating, editing and deleting', () => {
         });
     });
 
+    //------------------ USED VARIABLES BELOW THIS LINE -------------------
+
     const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
     const getCommentTextArea = () => cy.get('textarea[placeholder="Add a comment..."]');
     const getCommentsArea = () => cy.get('[data-testid="issue-comment"]');
     const getModalConfirm = () => cy.get('[data-testid="modal:confirm"]');
+    const testId = input => cy.get(`[data-testid=${input}]`);   // <-- variable for testing purpose
 
-    // Following variable for testing purpose
-    const testId = input => cy.get(`[data-testid=${input}]`);   
+    const addComment = (comment) => {
+        getIssueDetailsModal().within(() => {
+            cy.contains('Add a comment...').click();
+            getCommentTextArea().type(comment);
+            cy.contains('button', 'Save').click().should('not.exist');
+        });
+    };
+      
+    const editComment = (originalComment, newComment) => {
+        getCommentsArea().contains('Edit').click().should('not.exist');
+        getCommentTextArea().clear().type(newComment);
     
-    let numOfComments;
+        cy.contains('button', 'Save').click().should('not.exist');
+    };
+      
+    const deleteComment = () => {
+        getCommentsArea().contains('Delete').click();
+        getModalConfirm().contains('button', 'Delete comment').click().should('not.exist');
+    };
 
-    // My combined test
+    const assertCommentExist = (comment, numOfComments) => {
+        getCommentsArea()
+            .should('contain', 'Edit')
+            .and('contain', comment)
+            .should('have.length', numOfComments);
+    };
+
+    const assertCommentNotToExist = (comment, numOfComments) => {
+        getCommentsArea()
+            .should('contain', 'Edit')
+            .and('not.contain', comment)
+            .should('have.length', numOfComments);
+    };
+      
+    // My combined test v0.2
+    it('Should add, edit, and delete the comment', () => {
+        const commentOriginal = 'This is my first comment.';
+        const commentNew = 'This is an edited comment.';
+        
+        getCommentsArea().then(($comments) => {
+            const numOfComments = $comments.length;
+            cy.log(numOfComments);
+        
+            addComment(commentOriginal);
+            assertCommentExist(commentOriginal, numOfComments + 1);
+        
+            editComment(commentOriginal, commentNew);
+            assertCommentExist(commentNew, numOfComments + 1);
+            assertCommentNotToExist(commentOriginal, numOfComments + 1);
+                
+            deleteComment();
+            assertCommentNotToExist(commentNew, numOfComments);
+        });
+    });
+
+    
+    // My combined test v0.1
+    let numOfComments;
     it('Should add, edit and delete the comment', () => {
         const commentOriginal = "This is my first comment.";
         const commentNew = "This is edited comment.";
