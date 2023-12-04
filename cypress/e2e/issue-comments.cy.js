@@ -32,7 +32,14 @@ describe('Issue comments creating, editing and deleting', () => {
       
     const deleteComment = () => {
         getCommentsArea().contains('Delete').click();
-        getModalConfirm().contains('button', 'Delete comment').click().should('not.exist');
+        getModalConfirm()
+            .contains('Are you sure you want to delete this comment?')
+        getModalConfirm()
+            .contains("Once you delete, it's gone for good.")
+        getModalConfirm()
+            .contains('button', 'Delete comment')
+            .click()
+            .should('not.exist');
     };
 
     const assertCommentExist = (comment, numOfComments) => {

@@ -21,10 +21,10 @@ describe('Issue time tracking, editing and removing', () => {
     const assertRightValueOnTimeSpent = spentHours => getTimeSpentInput().should('exist').should('have.value', spentHours);
     const assertEmptyTimeSpent = () => getTimeSpentInput().should('exist').should('have.value', '');
 
-    it('Should add time estimation', () => {
+    it('Should add, edit and clear time estimation', () => {
         const originalValue = 8;
         const estimationFirst = 12;
-        const estimationSecond = 9;
+        const estimationSecond = 0;
 
         assertRightValueOnEstimatedTime(originalValue);
 
@@ -41,7 +41,7 @@ describe('Issue time tracking, editing and removing', () => {
     it('Should test time-logging, change, clear', () => {
         const originalValue = 4;
         const firstChange = 5;
-        const secondChange = 12;
+        const secondChange = 0;
         
         getTimeTrackingModal();
         assertRightValueOnTimeSpent(originalValue);
