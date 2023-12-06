@@ -60,6 +60,46 @@ describe('Issue details editing', () => {
       cy.get('.ql-snow').should('have.text', description);
     });
   });
+  
+  // JS Task 1. Dropdown "Priority"
+  it.only('Should test "Priority" dropdown', () => {
+    const expectedLength = 5;
+    const priorityValues = [];
+    
+    cy.get('div[data-testid="select:priority"] div div')
+    .invoke('text')
+    .then(textContent => {
+      priorityValues.push(textContent);
+      cy.log(JSON.stringify(priorityValues));      
+      cy.get('div[data-testid="select:priority"] div div')
+        .click()
+        .then(() => {            
+            cy.get('div[data-select-option-value]').then((parent) => {          
+              cy.wrap(parent).find('div').each((child) => {
+                const tekst = Cypress.$(child).text();
+                if (!priorityValues.includes(tekst)) {
+                  priorityValues.push(tekst);
+                  cy.log(JSON.stringify(priorityValues));
+                }
+              });
+              cy.wrap(priorityValues).should('have.length', expectedLength);
+            });
+        });
+      });
+  });
 
-  const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+  // JS Task 2. Reporte's name characters
+  it.only('Should test characters in reporter\'s name', () => {
+    cy.get('div[data-testid="select:reporter"]')
+    .invoke('text')
+    .then(textContent => {
+      cy.log(textContent);
+
+      const onlyLettersAndSpaces = /^[A-Za-z\s]+$/.test(textContent);
+      const onlyLetters = /^[A-Za-z]+$/.test(textContent);
+
+      expect(onlyLettersAndSpaces).to.be.true;
+      expect(onlyLetters).to.be.true;
+    });
+  });
 });
